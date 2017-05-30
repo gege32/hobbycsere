@@ -15,4 +15,11 @@ public class UserController {
 		return modelAndView;
 	}
 	
+	@RequestMapping(value={"/profile"}, method = RequestMethod.GET)
+	public ModelAndView profile(){
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("profile");
+		return modelAndView;
+	}
+	
 }

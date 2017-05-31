@@ -13,9 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
@@ -28,24 +27,23 @@ public class User {
 	private int id;
 	
 	@Column(name = "email")
-	@Email(message = "*Please provide a valid Email")
-	@NotEmpty(message = "*Please provide an email")
+	@NotNull
 	private String email;
 	
 	@Column(name = "password")
-	@NotEmpty(message = "*Please provide your password")
+	@NotNull
 	private String password;
 	
-	@NotEmpty(message = "*Please provide your password confirmation")
+	@NotNull
 	@Transient
 	private String passwordConfirm;
 	
 	@Column(name = "name")
-	@NotEmpty(message = "*Please provide your name")
+	@NotNull
 	private String name;
 	
 	@Column(name = "last_name")
-	@NotEmpty(message = "*Please provide your last name")
+	@NotNull
 	private String lastName;
 	
 	@Column(name = "active")

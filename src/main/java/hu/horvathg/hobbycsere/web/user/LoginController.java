@@ -1,66 +1,62 @@
 package hu.horvathg.hobbycsere.web.user;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import hu.horvathg.hobbycsere.model.user.User;
+import hu.horvathg.hobbycsere.service.authentication.UserValidator;
+import hu.horvathg.hobbycsere.service.security.SecurityService;
 import hu.horvathg.hobbycsere.service.user.UserService;
 
 @Controller
 public class LoginController {
-	
+
 	@Autowired
 	private UserService userService;
-	
-	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
-	public ModelAndView login(){
-		ModelAndView modelAndView = new ModelAndView();
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (!(auth instanceof AnonymousAuthenticationToken)) {
-			modelAndView.setViewName("home");
-		}
-		modelAndView.setViewName("login");
-		return modelAndView;
+
+	@Autowired
+	private SecurityService securityService;
+
+	@Autowired
+	private UserValidator userValidator;
+
+	@RequestMapping(value = "/registration", method = RequestMethod.GET)
+	public String registration(Model model) {
+		model.addAttribute("userForm", new User());
+
+		return "registration";
 	}
-	
-	
-	@RequestMapping(value="/registration", method = RequestMethod.GET)
-	public ModelAndView registration(){
-		ModelAndView modelAndView = new ModelAndView();
-		User user = new User();
-		modelAndView.addObject("user", user);
-		modelAndView.setViewName("registration");
-		return modelAndView;
-	}
-	
+
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public ModelAndView createNewUser(@Valid User user, BindingResult bindingResult) {
-		ModelAndView modelAndView = new ModelAndView();
-		User userExists = userService.findUserByEmail(user.getEmail());
-		if (userExists != null) {
-			bindingResult
-					.rejectValue("email", "error.user",
-							"There is already a user registered with the email provided");
-		}
+	public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
+		userValidator.validate(userForm, bindingResult);
+
 		if (bindingResult.hasErrors()) {
-			modelAndView.setViewName("registration");
-		} else {
-			userService.saveUser(user);
-			modelAndView.addObject("successMessage", "User has been registered successfully");
-			modelAndView.addObject("user", new User());
-			modelAndView.setViewName("registration");
-			
+			return "registration";
 		}
-		return modelAndView;
+
+		userService.saveUser(userForm);
+
+		securityService.autologin(userForm.getEmail(), userForm.getPasswordConfirm());
+
+		return "redirect:/welcome";
 	}
-	
+
+	@RequestMapping(value = { "/", "/login" }, method = RequestMethod.GET)
+	public String login(Model model, String error, String logout) {
+		if (error != null)
+			model.addAttribute("error", "Your username and password is invalid.");
+
+		if (logout != null)
+			model.addAttribute("message", "You have been logged out successfully.");
+
+		return "login";
+	}
+
+
 }

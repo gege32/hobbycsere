@@ -8,13 +8,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class UserController {
 	
-	@RequestMapping(value={"/home"}, method = RequestMethod.GET)
-	public ModelAndView login(){
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("home");
-		return modelAndView;
-	}
-	
 	@RequestMapping(value={"/profile"}, method = RequestMethod.GET)
 	public ModelAndView profile(){
 		ModelAndView modelAndView = new ModelAndView();

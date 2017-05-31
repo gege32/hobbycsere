@@ -9,4 +9,5 @@ public class HobbycsereApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HobbycsereApplication.class, args);
 	}
+	
 }

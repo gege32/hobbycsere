@@ -38,14 +38,14 @@ public class User {
 	@Transient
 	private String passwordConfirm;
 	
-	@Column(name = "name")
+	@Column(name = "full_name")
 	@NotNull
-	private String name;
+	private String fullName;
 	
-	@Column(name = "last_name")
+	@Column(name = "screen_name")
 	@NotNull
-	private String lastName;
-	
+	private String screenName;
+		
 	@Column(name = "active")
 	private int active;
 	
@@ -77,20 +77,20 @@ public class User {
 		return passwordConfirm;
 	}
 
-	public String getName() {
-		return name;
+	public String getFullName() {
+		return fullName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public String getScreenName() {
+		return screenName;
 	}
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setScreenName(String screenName) {
+		this.screenName = screenName;
 	}
 
 	public String getEmail() {

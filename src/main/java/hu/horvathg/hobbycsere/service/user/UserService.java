@@ -7,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import hu.horvathg.hobbycsere.model.repository.RoleRepository;
-import hu.horvathg.hobbycsere.model.repository.UserRepository;
 import hu.horvathg.hobbycsere.model.user.Role;
+import hu.horvathg.hobbycsere.model.user.RoleRepository;
 import hu.horvathg.hobbycsere.model.user.User;
+import hu.horvathg.hobbycsere.model.user.UserRepository;
 
 @Service("userService")
 public class UserService{
